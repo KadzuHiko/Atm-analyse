@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет по банкомату {{ device_id }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Красивые круги на фоне -->
+    <div class="glowing-circle circle-1"></div>
+    <div class="glowing-circle circle-2"></div>
+    <div class="glowing-circle circle-3"></div>
+
+    <!-- Главный контейнер -->
+    <div class="container">
+        <h1>Отчет по банкомату {{ device_id }}</h1>
+
+        <!-- Таблица данных -->
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Время</th>
+                    <th>Тип события</th>
+                    <th>Пользователь</th>
+                    <th>Детали</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        <td>{{ row.id }}</td>
+                        <td>{{ row.timestamp }}</td>
+                        <td>{{ row.event_type }}</td>
+                        <td>{{ row.user_id }}</td>
+                        <td>{{ row.details }}</td>
+                        <td>{{ row.value if row.value is not none else '—' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Кнопка "Назад" -->
+        <a href="/reports" class="btn">Назад к списку банкоматов</a>
+    </div>
+</body>
+</html>

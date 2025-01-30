@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Аналитические задачи</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Аналитические задачи</h1>
+        <h2>Необходимость ремонта</h2>
+        <div class="analytics-buttons">
+            {% for atm in repair_needed %}
+                <a href="#">Ремонт банкомата {{ atm }}</a>
+            {% endfor %}
+        </div>
+        <h2>Необходимость инкассации</h2>
+        <div class="analytics-buttons">
+            {% for atm in incasso_needed %}
+                <a href="#">Инкассация банкомата {{ atm }}</a>
+            {% endfor %}
+        </div>
+        <a href="/">На главную</a>
+    </div>
+</body>
+</html>
