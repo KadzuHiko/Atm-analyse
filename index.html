@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>ATM Management System</h1>
+        <h2>Upload CSV File</h2>
+        <form id="uploadForm">
+            <input type="file" id="fileInput" accept=".csv" required>
+            <button type="submit">Upload</button>
+        </form>
+        <p id="error" style="color: red;"></p>
+        <div id="dataTable" style="display: none;">
+            <h3>Uploaded Data</h3>
+            <table border="1">
+                <thead>
+                    <tr id="tableHeader"></tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+        <div id="analysisResults" style="display: none;">
+            <h3>Analysis Results</h3>
+            <h4>ATM Statuses</h4>
+            <ul id="atmStatuses"></ul>
+            <h4>Failures</h4>
+            <ul id="failures"></ul>
+            <h4>Maintenance Needed</h4>
+            <ul id="maintenanceNeeded"></ul>
+            <h4>Incasso Needed</h4>
+            <ul id="incassoNeeded"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            const error = document.getElementById('error');
+            const dataTable = document.getElementById('dataTable');
+            const tableHeader = document.getElementById('tableHeader');
+            const tableBody = document.getElementById('tableBody');
+            const analysisResults = document.getElementById('analysisResults');
+            const atmStatuses = document.getElementById('atmStatuses');
+            const failures = document.getElementById('failures');
+            const maintenanceNeeded = document.getElementById('maintenanceNeeded');
+            const incassoNeeded = document.getElementById('incassoNeeded');
+
+            if (!fileInput.files[0]) {
+                error.textContent = 'Please select a file';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (response.status === 200) {
+                    error.textContent = '';
+                    dataTable.style.display = 'block';
+                    analysisResults.style.display = 'block';
+
+                    // Очистка таблицы
+                    tableHeader.innerHTML = '';
+                    tableBody.innerHTML = '';
+
+                    // Заголовки таблицы
+                    const headers = Object.keys(result.data[0]);
+                    headers.forEach(header => {
+                        const th = document.createElement('th');
+                        th.textContent = header;
+                        tableHeader.appendChild(th);
+                    });
+
+                    // Данные таблицы
+                    result.data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        Object.values(row).forEach(value => {
+                            const td = document.createElement('td');
+                            td.textContent = value;
+                            tr.appendChild(td);
+                        });
+                        tableBody.appendChild(tr);
+                    });
+
+                    // Отображение результатов анализа
+                    atmStatuses.innerHTML = '';
+                    for (const [atm, status] of Object.entries(result.analysis.atm_statuses || {})) {
+                        const li = document.createElement('li');
+                        li.textContent = `${atm}: ${status}`;
+                        atmStatuses.appendChild(li);
+                    }
+
+                    failures.innerHTML = '';
+                    for (const [atm, count] of Object.entries(result.analysis.failures || {})) {
+                        const li = document.createElement('li');
+                        li.textContent = `${atm}: ${count} failures`;
+                        failures.appendChild(li);
+                    }
+
+                    maintenanceNeeded.innerHTML = '';
+                    result.analysis.maintenance_needed.forEach(atm => {
+                        const li = document.createElement('li');
+                        li.textContent = atm;
+                        maintenanceNeeded.appendChild(li);
+                    });
+
+                    incassoNeeded.innerHTML = '';
+                    result.analysis.incasso_needed.forEach(atm => {
+                        const li = document.createElement('li');
+                        li.textContent = atm;
+                        incassoNeeded.appendChild(li);
+                    });
+                } else {
+                    error.textContent = result.error || 'Error uploading file';
+                }
+            } catch (err) {
+                error.textContent = 'Error uploading file';
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>
