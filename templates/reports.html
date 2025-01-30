@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчеты по банкоматам</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Красивые круги на фоне -->
+    <div class="glowing-circle circle-1"></div>
+    <div class="glowing-circle circle-2"></div>
+    <div class="glowing-circle circle-3"></div>
+
+    <!-- Главный контейнер -->
+    <div class="container">
+        <h1>Отчеты по банкоматам</h1>
+
+        <!-- Прокручиваемое меню с кнопками банкоматов -->
+        <div class="scrollable-atm-buttons">
+            {% for atm in atms %}
+                <a href="/get_atm_report/{{ atm }}" class="atm-button">{{ atm }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

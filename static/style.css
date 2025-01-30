@@ -1,66 +1,145 @@
+/* Общие стили */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #121212;
+    overflow: hidden; /* Убираем скролл из-за кругов */
 }
 
+/* Красивые полупрозрачные круги с размытием */
+.glowing-circle {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 0, 0, 0.1); /* Уменьшили прозрачность */
+    border-radius: 50%; /* Делаем круг */
+    filter: blur(50px); /* Размытие по Гауссу */
+    z-index: -1; /* Помещаем их за контентом */
+}
+
+.circle-1 {
+    top: 20%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+}
+
+.circle-2 {
+    top: 70%;
+    right: 20%;
+    transform: translate(50%, 50%);
+}
+
+.circle-3 {
+    bottom: 10%;
+    left: 10%;
+    transform: translate(-50%, 50%);
+}
+
+/* Главный контейнер */
 .container {
     width: 80%;
-    margin: 50px auto;
-    background: #fff;
+    margin: 0 auto;
+    background: #222222;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    position: relative;
+    z-index: 1; /* Поднимаем контейнер выше кругов */
+    margin-top: 50vh; /* Спускаем контейнер вниз */
+    transform: translateY(-50%); /* Центрируем по вертикали */
 }
 
-h1, h2, h3, h4 {
-    color: #333;
+/* Заголовок */
+h1 {
+    color: white;
+    text-align: center;
 }
 
-form {
-    margin-bottom: 20px;
-}
-
-input[type="file"] {
-    margin-right: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
+/* Прокручиваемое меню с кнопками банкоматов */
+.scrollable-atm-buttons {
+    display: flex;
+    overflow-x: auto; /* Горизонтальная прокрутка */
+    gap: 10px;
+    padding: 10px 0;
     margin-top: 20px;
 }
 
-th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
+.scrollable-atm-buttons::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scrollable-atm-buttons::-webkit-scrollbar-thumb {
+    background-color: #c0392b;
+    border-radius: 4px;
+}
+
+.atm-button {
+    text-decoration: none;
+    color: white;
+    background-color: #c0392b;
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 18px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* Запрещаем сжатие кнопок */
+}
+
+.atm-button:hover {
+    background-color: #a93226;
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Таблица данных */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #444;
+    padding: 12px;
     text-align: left;
 }
 
-th {
-    background-color: #f8f9fa;
+.data-table th {
+    background-color: #a93226;
+    color: white;
+    font-weight: bold;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+.data-table tr:nth-child(even) {
+    background-color: #555;
 }
 
-ul li {
-    background: #f8f9fa;
-    margin: 5px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
+.data-table tr:hover {
+    background-color: #666;
+}
+
+/* Кнопка "Назад" */
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #c0392b;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background-color: #a93226;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет поbanкомату {{ device_id }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Отчет по банкомату {{ device_id }}</h1>
+        <p>Процент времени работы за неделю: {{ uptime_week }}%</p>
+        <p>Процент времени работы за месяц: {{ uptime_month }}%</p>
+        <p>Количество сбоев за неделю: {{ failures_week }}</p>
+        <p>Количество сбоев за месяц: {{ failures_month }}</p>
+
+        <div class="action-buttons">
+            <button onclick="maintenance={{ device_id }}" style="margin-top: 20px;">Ремонт банкомата {{ device_id }}</button>
+            <a href="/reports" style="color: #c0392b; text-decoration: none;">Назад к списку банкоматов</a>
+        </div>
+
+        <!-- Добавьте остальные элементы -->
+    </div>
+</body>
+</html>
