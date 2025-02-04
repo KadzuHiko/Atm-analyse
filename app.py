@@ -1,11 +1,14 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 import pandas as pd
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
+from geopy.distance import geodesic
 import os
 import logging
+
+app = Flask(__name__)
 
 # Логирование
 logging.basicConfig(level=logging.DEBUG)
@@ -16,12 +19,9 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # Настройки базы данных
-DATABASE_URL = "sqlite:///atm_db.sqlite"
-engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 
 
-# Определяем модель
 class ATMEvent(Base):
     __tablename__ = 'atm_events'
 
@@ -34,28 +34,19 @@ class ATMEvent(Base):
     value = Column(String)  # Новая колонка
 
 
-# Создаем таблицы в базе данных
+engine = create_engine('sqlite:///atm_db.sqlite')
 Base.metadata.create_all(engine)
-
-# Создаем сессию для работы с базой данных
 Session = sessionmaker(bind=engine)
 session = Session()
 
 # Флаг для проверки загрузки файла
 file_uploaded = False
 
-# Инициализация Flask
-app = Flask(__name__)
-
 
 @app.route('/')
 def index():
     return render_template('index.html', file_uploaded=file_uploaded)
 
-@app.route('/data')
-def show_data():
-    data = session.query(ATMEvent).all()
-    return render_template('data.html', data=data, file_uploaded=file_uploaded)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -85,6 +76,9 @@ def upload_file():
 
             # Преобразование Timestamp в datetime
             df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')
+
+            # Анализ данных
+            analysis_results = analyze_data(df)
 
             # Сохранение данных в базу
             for _, row in df.iterrows():
@@ -167,6 +161,28 @@ def calculate_uptime(data):
                    for i, event in enumerate(data) if "Ошибка" in event.event_type)
     uptime = (total_time - downtime) / total_time * 100 if total_time > 0 else 0
     return round(uptime, 2)
+
+
+def analyze_data(df):
+    results = {
+        "статусы_банкоматов": {},
+        "сбои": {},
+        "необходимость_ремонта": [],
+        "необходимость_инкассации": []
+    }
+    atm_list = df['DeviceID'].unique()
+    for atm in atm_list:
+        atm_data = df[df['DeviceID'] == atm]
+        last_event = atm_data.iloc[-1]['EventType']
+        results["статусы_банкоматов"][atm] = last_event
+        failures = atm_data[
+            atm_data['EventType'].str.contains('Ошибка|ЗажеваннаяКупюра|Низкий уровень наличных', na=False)]
+        results["сбои"][atm] = len(failures)
+        if len(failures) > 0:
+            results["необходимость_ремонта"].append(atm)
+        if any("Низкий уровень наличных" in detail for detail in atm_data['Details']):
+            results["необходимость_инкассации"].append(atm)
+    return results
 
 
 if __name__ == '__main__':

@@ -2,23 +2,63 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Отчет поbanкомату {{ device_id }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты загрузки</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Отчет по банкомату {{ device_id }}</h1>
-        <p>Процент времени работы за неделю: {{ uptime_week }}%</p>
-        <p>Процент времени работы за месяц: {{ uptime_month }}%</p>
-        <p>Количество сбоев за неделю: {{ failures_week }}</p>
-        <p>Количество сбоев за месяц: {{ failures_month }}</p>
+        <h1>Результаты загрузки CSV-файла</h1>
+        <h2>Данные из файла</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for key in data[0].keys() %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        {% for value in row.values() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-        <div class="action-buttons">
-            <button onclick="maintenance={{ device_id }}" style="margin-top: 20px;">Ремонт банкомата {{ device_id }}</button>
-            <a href="/reports" style="color: #c0392b; text-decoration: none;">Назад к списку банкоматов</a>
-        </div>
+        <h2>Анализ данных</h2>
+        <h3>Статусы банкоматов</h3>
+        <ul>
+            {% for atm, status in analysis.статусы_банкоматов.items() %}
+                <li>Банкомат {{ atm }}: {{ status }}</li>
+            {% endfor %}
+        </ul>
 
-        <!-- Добавьте остальные элементы -->
+        <h3>Сбои</h3>
+        <ul>
+            {% for atm, count in analysis.сбои.items() %}
+                <li>Банкомат {{ atm }}: {{ count }} сбоев</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Необходимость ремонта</h3>
+        <ul>
+            {% for atm in analysis.необходимость_ремонта %}
+                <li>Банкомат {{ atm }} требует ремонта</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Необходимость инкассации</h3>
+        <ul>
+            {% for atm in analysis.необходимость_инкассации %}
+                <li>Банкомат {{ atm }} требует инкассации</li>
+            {% endfor %}
+        </ul>
+
+        <a href="/">Вернуться на главную</a>
     </div>
 </body>
 </html>

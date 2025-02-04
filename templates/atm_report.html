@@ -2,21 +2,19 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Отчет по банкомату {{ device_id }}</title>
+    <title>Отчет по банкомату</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <!-- Красивые круги на фоне -->
-    <div class="glowing-circle circle-1"></div>
-    <div class="glowing-circle circle-2"></div>
-    <div class="glowing-circle circle-3"></div>
-
-    <!-- Главный контейнер -->
     <div class="container">
         <h1>Отчет по банкомату {{ device_id }}</h1>
+        <p>Процент времени работы за неделю: {{ uptime_week }}%</p>
+        <p>Процент времени работы за месяц: {{ uptime_month }}%</p>
+        <p>Количество сбоев за неделю: {{ failures_week }}</p>
+        <p>Количество сбоев за месяц: {{ failures_month }}</p>
 
-        <!-- Таблица данных -->
-        <table class="data-table">
+        <h2>Данные банкомата</h2>
+        <table border="1">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -24,7 +22,7 @@
                     <th>Тип события</th>
                     <th>Пользователь</th>
                     <th>Детали</th>
-                    <th>Статус</th>
+                    <th>Значение</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,14 +33,12 @@
                         <td>{{ row.event_type }}</td>
                         <td>{{ row.user_id }}</td>
                         <td>{{ row.details }}</td>
-                        <td>{{ row.value if row.value is not none else '—' }}</td>
+                        <td>{{ row.value }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <!-- Кнопка "Назад" -->
-        <a href="/reports" class="btn">Назад к списку банкоматов</a>
+        <a href="/reports">Назад к списку банкоматов</a>
     </div>
 </body>
 </html>
