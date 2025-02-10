@@ -1,87 +1,136 @@
+/* Общие стили */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #e9ecef; /* Более мягкий светло-серый фон */
+    color: #212529; /* Темно-серый текст */
 }
 
+/* Главный контейнер */
 .container {
     width: 80%;
+    max-width: 1200px; /* Ограничение ширины для больших экранов */
     margin: 50px auto;
-    background: #fff;
+    background: #ffffff; /* Белый фон */
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    border-radius: 8px;
 }
 
+/* Заголовки */
 h1 {
-    color: #333;
+    color: #343a40; /* Темно-серый заголовок */
     text-align: center;
-}
-
-.menu {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
     margin-bottom: 20px;
 }
 
-.menu li a {
+h2 {
+    color: #495057; /* Средне-серый подзаголовок */
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Кнопки */
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #17a2b8; /* Мягкий голубой акцент */
+    color: white;
     text-decoration: none;
-    color: #fff;
-    background-color: #007bff;
-    padding: 12px 24px;
-    border-radius: 8px;
+    border-radius: 5px;
     font-size: 16px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #138496; /* Темнее при наведении */
+}
+
+/* Таблица данных */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.menu li a:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+.data-table th,
+.data-table td {
+    border: 1px solid #ced4da; /* Более мягкая светло-серая граница */
+    padding: 12px;
+    text-align: left;
 }
 
-.atm-buttons, .analytics-buttons {
+.data-table th {
+    background-color: #f8f9fa; /* Очень светло-серый фон */
+    color: #343a40; /* Темно-серый текст */
+    font-weight: bold;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #f8f9fa; /* Очень светло-серый фон для четных строк */
+}
+
+.data-table tr:hover {
+    background-color: #d4edda; /* Мягкий зеленоватый фон при наведении */
+}
+
+/* Прокручиваемое меню с кнопками банкоматов */
+.scrollable-atm-buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0;
+    margin-top: 20px;
 }
 
-.atm-buttons a {
+.scrollable-atm-buttons::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scrollable-atm-buttons::-webkit-scrollbar-thumb {
+    background-color: #adb5bd; /* Более мягкая серая полоса прокрутки */
+    border-radius: 4px;
+}
+
+.atm-button {
     text-decoration: none;
     color: #fff;
-    background-color: #28a745;
+    background-color: #28a745; /* Мягкий зеленый акцент */
     padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
-.atm-buttons a:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+.atm-button:hover {
+    background-color: #218838; /* Темнее при наведении */
 }
 
-.analytics-buttons a {
+/* Форма загрузки */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.upload-button {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    background-color: #ffc107; /* Мягкий желтый акцент */
+    color: white;
     text-decoration: none;
-    color: #fff;
-    background-color: #ffc107;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
-.analytics-buttons a:hover {
-    background-color: #e0a800;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+.upload-button:hover {
+    background-color: #e0a800; /* Темнее при наведении */
 }

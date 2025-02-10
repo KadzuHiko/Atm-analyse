@@ -2,19 +2,24 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Отчет по банкомату</title>
+    <title>Отчет по банкомату {{ device_id }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <!-- Главный контейнер -->
     <div class="container">
         <h1>Отчет по банкомату {{ device_id }}</h1>
-        <p>Процент времени работы за неделю: {{ uptime_week }}%</p>
-        <p>Процент времени работы за месяц: {{ uptime_month }}%</p>
-        <p>Количество сбоев за неделю: {{ failures_week }}</p>
-        <p>Количество сбоев за месяц: {{ failures_month }}</p>
 
-        <h2>Данные банкомата</h2>
-        <table border="1">
+        <!-- Метрики работы банкомата -->
+        <div class="metrics">
+            <p><strong>Процент времени работы за неделю:</strong> {{ uptime_week }}%</p>
+            <p><strong>Процент времени работы за месяц:</strong> {{ uptime_month }}%</p>
+            <p><strong>Количество сбоев за неделю:</strong> {{ failures_week }}</p>
+            <p><strong>Количество сбоев за месяц:</strong> {{ failures_month }}</p>
+        </div>
+
+        <!-- Таблица данных -->
+        <table class="data-table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -22,23 +27,31 @@
                     <th>Тип события</th>
                     <th>Пользователь</th>
                     <th>Детали</th>
-                    <th>Значение</th>
+                    <th>Статус</th>
                 </tr>
             </thead>
             <tbody>
-                {% for row in data %}
+                {% if data %}
+                    {% for row in data %}
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.timestamp }}</td>
+                            <td>{{ row.event_type }}</td>
+                            <td>{{ row.user_id }}</td>
+                            <td>{{ row.details }}</td>
+                            <td>{{ row.value if row.value is not none else '—' }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
                     <tr>
-                        <td>{{ row.id }}</td>
-                        <td>{{ row.timestamp }}</td>
-                        <td>{{ row.event_type }}</td>
-                        <td>{{ row.user_id }}</td>
-                        <td>{{ row.details }}</td>
-                        <td>{{ row.value }}</td>
+                        <td colspan="6" style="text-align: center;">Нет данных для отображения</td>
                     </tr>
-                {% endfor %}
+                {% endif %}
             </tbody>
         </table>
-        <a href="/reports">Назад к списку банкоматов</a>
+
+        <!-- Кнопка "Назад" -->
+        <a href="/reports" class="btn">Назад к списку банкоматов</a>
     </div>
 </body>
 </html>

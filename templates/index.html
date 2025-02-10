@@ -2,22 +2,27 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <!-- Главный контейнер -->
     <div class="container">
-        <h1>Система управления банкоматами</h1>
-        {% if file_uploaded %}
-            <ul class="menu">
-                <li><a href="/data">Просмотреть данные</a></li>
-                <li><a href="/reports">Отчетность</a></li>
-                <li><a href="/analytics">Аналитические задачи</a></li>
-            </ul>
-        {% endif %}
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".csv" required>
-            <button type="submit">Загрузить CSV</button>
+        <h1>Система аналитики банкоматов</h1>
+
+        <!-- Блок кнопок -->
+        <div class="main-buttons">
+            <a href="/data" class="main-button">Просмотреть данные</a>
+            <a href="/reports" class="main-button">Отчетность</a>
+            <a href="/analytics" class="main-button">Аналитические задачи</a>
+        </div>
+
+        <!-- Форма загрузки CSV-файла -->
+        <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+            <label for="file-input" class="upload-button">Выбрать CSV-файл</label>
+            <input type="file" id="file-input" name="file" accept=".csv" required style="display: none;">
+            <button type="submit" class="upload-button">Загрузить файл</button>
         </form>
     </div>
 </body>

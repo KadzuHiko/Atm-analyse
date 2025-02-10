@@ -2,18 +2,27 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Отчеты</title>
+    <title>Отчеты по банкоматам</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <!-- Главный контейнер -->
     <div class="container">
         <h1>Отчеты по банкоматам</h1>
-        <div class="atm-buttons">
-            {% for atm in atms %}
-                <a href="/get_atm_report/{{ atm }}">Банкомат {{ atm }}</a>
-            {% endfor %}
+
+        <!-- Прокручиваемое меню с кнопками банкоматов -->
+        <div class="scrollable-atm-buttons">
+            {% if atms %}
+                {% for atm in atms %}
+                    <a href="/get_atm_report/{{ atm }}" class="atm-button">{{ atm }}</a>
+                {% endfor %}
+            {% else %}
+                <p style="color: #333; text-align: center;">Нет доступных банкоматов</p>
+            {% endif %}
         </div>
-        <a href="/">На главную</a>
+
+        <!-- Кнопка "На главную" -->
+        <a href="/" class="btn">На главную</a>
     </div>
 </body>
 </html>

@@ -2,35 +2,51 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Таблица данных</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотреть данные</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <!-- Главный контейнер -->
     <div class="container">
-        <h1>Таблица данных</h1>
-        <table border="1">
+        <h1>Просмотреть данные</h1>
+
+        <!-- Таблица данных -->
+        <table class="data-table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Время</th>
                     <th>Банкомат</th>
                     <th>Тип события</th>
+                    <th>Пользователь</th>
                     <th>Детали</th>
+                    <th>Статус</th>
                 </tr>
             </thead>
             <tbody>
-                {% for row in data %}
+                {% if data %}
+                    {% for row in data %}
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.timestamp }}</td>
+                            <td>{{ row.device_id }}</td>
+                            <td>{{ row.event_type }}</td>
+                            <td>{{ row.user_id }}</td>
+                            <td>{{ row.details }}</td>
+                            <td>{{ row.value if row.value is not none else '—' }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
                     <tr>
-                        <td>{{ row.id }}</td>
-                        <td>{{ row.timestamp }}</td>
-                        <td>{{ row.device_id }}</td>
-                        <td>{{ row.event_type }}</td>
-                        <td>{{ row.details }}</td>
+                        <td colspan="7" style="text-align: center;">Нет данных для отображения</td>
                     </tr>
-                {% endfor %}
+                {% endif %}
             </tbody>
         </table>
-        <a href="/">На главную</a>
+
+        <!-- Кнопка "На главную" -->
+        <a href="/" class="btn">На главную</a>
     </div>
 </body>
 </html>
